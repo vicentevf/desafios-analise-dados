@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafios SQL - Módulo 04</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #22c55e;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --code-bg: #090d16;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .theory-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .theory-card h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .exercise-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            background-color: #334155;
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .exercise-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .prompt {
+            color: #e2e8f0;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        details {
+            background-color: var(--code-bg);
+            border-radius: 6px;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        summary {
+            cursor: pointer;
+            color: var(--accent-color);
+            font-weight: 600;
+            user-select: none;
+        }
+
+        pre {
+            margin-top: 10px;
+            margin-bottom: 0;
+            overflow-x: auto;
+            color: #38bdf8;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Módulo 04: Consultas Básicas e Filtros em SQL</h1>
+        <p class="subtitle">Exercícios práticos baseados no banco de dados fictício <code>VendasDB</code></p>
+    </header>
+
+    <!-- Conceito: Tabelas Fato e Dimensão -->
+    <div class="theory-card">
+        <h2>04.02. Tabelas Fato e Dimensão (VendasDB)</h2>
+        <p>No nosso banco de dados:</p>
+        <ul>
+            <li><strong>Tabelas Fato (Eventos/Métricas):</strong> <code>vendas</code> e <code>itens_venda</code> (registram transações do negócio e métricas como valor e quantidade).</li>
+            <li><strong>Tabelas Dimensão (Contexto/Entidades):</strong> <code>clientes</code>, <code>produtos</code> e <code>categorias</code> (contêm os atributos para filtrar e agrupar as métricas).</li>
+        </ul>
+    </div>
+
+    <!-- Exercício 1 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.03 & 04.04. Primeiro SELECT & Colunas Específicas</span>
+            <span class="badge">Básico</span>
+        </div>
+        <div class="prompt">
+            Escreva uma consulta que retorne apenas o <strong>nome</strong>, o <strong>e-mail</strong> e a <strong>cidade</strong> de todos os clientes cadastrados.
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT 
+    nome, 
+    email, 
+    cidade 
+FROM clientes;</code></pre>
+        </details>
+    </div>
+
+    <!-- Exercício 2 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.05. Colunas com Alias</span>
+            <span class="badge">Alias</span>
+        </div>
+        <div class="prompt">
+            Selecione a coluna <code>nome_produto</code> renomeando-a para <strong>Produto</strong> e a coluna <code>preco_unitario</code> renomeando-a para <strong>Preco_R$</strong> na tabela de produtos.
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT 
+    nome_produto AS Produto, 
+    preco_unitario AS [Preco_R$] 
+FROM produtos;</code></pre>
+        </details>
+    </div>
+
+    <!-- Exercício 3 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.06, 04.07 & 04.08. Ordenando Dados</span>
+            <span class="badge">ORDER BY</span>
+        </div>
+        <div class="prompt">
+            Listar todos os produtos ordenados primeiramente pelo <code>categoria_id</code> em ordem crescente e, em seguida, pelo <code>preco_unitario</code> em ordem decrescente.
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT 
+    categoria_id, 
+    nome_produto, 
+    preco_unitario 
+FROM produtos
+ORDER BY 
+    categoria_id ASC, 
+    preco_unitario DESC;</code></pre>
+        </details>
+    </div>
+
+    <!-- Exercício 4 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.09 & 04.10. TOP e TOP WITH TIES</span>
+            <span class="badge">TOP / Limits</span>
+        </div>
+        <div class="prompt">
+            Selecione as 3 vendas de maior valor (<code>valor_total</code>) gravadas na tabela <code>vendas</code>. Inclua potenciais empates na 3ª posição usando <code>WITH TIES</code>.
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT TOP 3 WITH TIES 
+    venda_id, 
+    cliente_id, 
+    valor_total 
+FROM vendas
+ORDER BY valor_total DESC;</code></pre>
+        </details>
+    </div>
+
+    <!-- Exercício 5 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.11 & 04.12. WHERE e Operadores Lógicos</span>
+            <span class="badge">Filtros</span>
+        </div>
+        <div class="prompt">
+            Retorne todos os clientes que residem no <strong>Brasil</strong> E na cidade de <strong>São Paulo</strong>.
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT * 
+FROM clientes
+WHERE pais = 'Brasil' AND cidade = 'São Paulo';</code></pre>
+        </details>
+    </div>
+
+    <!-- Exercício 6 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.13 & 04.16. Operadores IN e NOT</span>
+            <span class="badge">IN / NOT</span>
+        </div>
+        <div class="prompt">
+            Selecione todos os produtos que <strong>NÃO</strong> pertencem às categorias 1, 3 e 5.
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT * 
+FROM produtos
+WHERE categoria_id NOT IN (1, 3, 5);</code></pre>
+        </details>
+    </div>
+
+    <!-- Exercício 7 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.15. Operador BETWEEN</span>
+            <span class="badge">Intervalos</span>
+        </div>
+        <div class="prompt">
+            Encontre todas as vendas realizadas no primeiro trimestre de 2026 (entre <code>2026-01-01</code> e <code>2026-03-31</code>).
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT * 
+FROM vendas
+WHERE data_venda BETWEEN '2026-01-01' AND '2026-03-31';</code></pre>
+        </details>
+    </div>
+
+    <!-- Exercício 8 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">04.17 & 04.18. Concatenando colunas & LIKE</span>
+            <span class="badge">Texto</span>
+        </div>
+        <div class="prompt">
+            Exiba uma coluna contendo a frase formatada: <em>"Cliente [Nome] mora em [Cidade] - [Pais]"</em> para todos os clientes cujo nome comece com a letra <strong>'A'</strong> or <strong>'M'</strong>.
+        </div>
+        <details>
+            <summary>Ver Resolução SQL</summary>
+            <pre><code>SELECT 
+    'Cliente ' + nome + ' mora em ' + cidade + ' - ' + pais AS descricao_cliente
+FROM clientes
+WHERE nome LIKE 'A%' OR nome LIKE 'M%';</code></pre>
+        </details>
+    </div>
+
+</div>
+
+</body>
+</html>
