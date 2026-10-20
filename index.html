@@ -1,288 +1,187 @@
-<!-- Header -->
-<header class="bg-slate-800 border-b border-slate-700 py-6 px-4 shadow-md">
-    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-sky-400 flex items-center gap-2">
-                <i class="fa-solid fa-database"></i> Exercícios de SQL Server (T-SQL)
-            </h1>
-            <p class="text-slate-400 text-sm mt-1">
-                Prática baseada no banco de dados E-Commerce / Vendas (SSMS 22)
-            </p>
-        </div>
-        <div class="bg-slate-700/50 px-4 py-2 rounded-lg border border-slate-600 text-xs text-slate-300">
-            <i class="fa-solid fa-circle-info text-sky-400 mr-1"></i>
-            Banco: <span class="font-mono text-emerald-400">VendasDB</span>
-        </div>
-    </div>
-</header>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios T-SQL - AdventureWorksDW2025</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-hover: #0284c7;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --code-bg: #090d16;
+            --border-color: #334155;
+            --success-color: #22c55e;
+        }
 
-<!-- Main Content -->
-<main class="flex-grow max-w-5xl mx-auto w-full p-4 md:p-6 space-y-8">
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <!-- Intro Card -->
-    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-sm">
-        <h2 class="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-rocket text-amber-400"></i> Como utilizar este guia
-        </h2>
-        <p class="text-slate-300 text-sm leading-relaxed mb-4">
-            Escreva suas consultas SQL diretamente no editor abaixo de cada exercício. Você pode testar suas respostas clicando em <strong>"Verificar Resposta"</strong> ou conferir a solução oficial em <strong>"Ver Gabarito"</strong>.
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .exercise-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-basico { background-color: #1e3a8a; color: #93c5fd; }
+        .badge-intermediario { background-color: #713f12; color: #fde047; }
+        .badge-avancado { background-color: #7f1d1d; color: #fca5a5; }
+
+        .exercise-description {
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+        }
+
+        .toggle-btn {
+            background-color: var(--accent-color);
+            color: #000;
+            font-weight: 600;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--accent-hover);
+            color: #fff;
+        }
+
+        .solution-container {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .solution-container.show {
+            display: block;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: "Fira Code", Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+
+        code {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Práticas T-SQL</h1>
+        <p>Base de Dados: <code>AdventureWorksDW2025</code></p>
+    </header>
+
+    <!-- Exercício 1 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">1. Listagem de Clientes e Renda Anual</span>
+            <span class="badge badge-basico">Básico</span>
+        </div>
+        <p class="exercise-description">
+            Selecione o primeiro nome (<code>FirstName</code>), sobrenome (<code>LastName</code>), e a renda anual (<code>YearlyIncome</code>) de todos os clientes da tabela <code>DimCustomer</code> que possuem uma renda anual superior a $80,000. Ordene pelo sobrenome em ordem alfabética.
         </p>
-        <div class="flex flex-wrap gap-2 text-xs font-mono">
-            <span class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded">WHERE</span>
-            <span class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded">INNER JOIN</span>
-            <span class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded">LEFT JOIN</span>
-            <span class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded">GROUP BY</span>
-            <span class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded">HAVING</span>
+        <button class="toggle-btn" onclick="toggleSolution('sol-1')">Ver Resposta</button>
+        <div id="sol-1" class="solution-container">
+<pre><code>SELECT 
+    FirstName,
+    LastName,
+    YearlyIncome
+FROM dbo.DimCustomer
+WHERE YearlyIncome > 80000
+ORDER BY LastName ASC;</code></pre>
         </div>
     </div>
 
-    <!-- MÓDULO 1 -->
-    <section class="space-y-6">
-        <div class="border-b border-slate-700 pb-2">
-            <h2 class="text-xl font-bold text-sky-400 flex items-center gap-2">
-                <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full border border-sky-500/20">Módulo 1</span>
-                Filtros, Ordenação e Operadores
-            </h2>
+    <!-- Exercício 2 -->
+    <div class="exercise-card">
+        <div class="exercise-header">
+            <span class="exercise-title">2. Total de Vendas por Categoria de Produto</span>
+            <span class="badge badge-intermediario">Intermediário</span>
         </div>
-
-        <!-- Ex 1.1 -->
-        <div class="bg-slate-800/80 rounded-xl border border-slate-700 p-5 space-y-4 shadow-sm" id="ex-1-1">
-            <div>
-                <h3 class="font-semibold text-slate-200">Exercício 1.1 — Campanha de Marketing Regional</h3>
-                <p class="text-slate-400 text-sm mt-1">
-                    A equipe de marketing quer fazer uma campanha para clientes do Sudeste. Escreva uma consulta que selecione o <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">Nome</code>, <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">Email</code>, <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">Cidade</code> e <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">Estado</code> de todos os clientes localizados nos estados de <strong>'SP'</strong>, <strong>'RJ'</strong> ou <strong>'MG'</strong>. Ordene pelo Nome em ordem alfabética.
-                </p>
-            </div>
-            <textarea class="w-full h-28 bg-slate-900 text-slate-200 p-3 rounded-lg border border-slate-700 focus:outline-none focus:border-sky-500 code-font text-sm" placeholder="SELECT ... FROM ..."></textarea>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="checkAnswer('ex-1-1', ['SELECT', 'FROM CLIENTES', 'IN', 'ORDER BY'])" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-check"></i> Verificar Resposta
-                </button>
-                <button onclick="toggleSolution('sol-1-1')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-eye"></i> Ver Gabarito
-                </button>
-            </div>
-            <div id="feedback-ex-1-1" class="hidden text-xs p-3 rounded-lg"></div>
-            <div id="sol-1-1" class="hidden bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
-                <p class="text-xs text-slate-400 mb-2 font-semibold">Gabarito Sugerido:</p>
-                <pre class="code-font text-xs text-emerald-400 overflow-x-auto">SELECT Nome, Email, Cidade, Estado
-
-
-FROM Clientes
-WHERE Estado IN ('SP', 'RJ', 'MG')
-ORDER BY Nome ASC;
-
-
-
-        <!-- Ex 1.2 -->
-        <div class="bg-slate-800/80 rounded-xl border border-slate-700 p-5 space-y-4 shadow-sm" id="ex-1-2">
-            <div>
-                <h3 class="font-semibold text-slate-200">Exercício 1.2 — Alerta de Estoque Crítico</h3>
-                <p class="text-slate-400 text-sm mt-1">
-                    O setor de estoque precisa identificar produtos com baixo estoque e preço elevado. Liste o <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">NomeProduto</code>, <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">PrecoUnitario</code> e <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">Estoque</code> dos produtos que possuem Estoque menor que <strong>15</strong> unidades E PrecoUnitario maior que <strong>R$ 100,00</strong>.
-                </p>
-            </div>
-            <textarea class="w-full h-28 bg-slate-900 text-slate-200 p-3 rounded-lg border border-slate-700 focus:outline-none focus:border-sky-500 code-font text-sm" placeholder="SELECT ... FROM ..."></textarea>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="checkAnswer('ex-1-2', ['SELECT', 'FROM PRODUTOS', 'ESTOQUE < 15', 'PRECOUNITARIO > 100'])" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-check"></i> Verificar Resposta
-                </button>
-                <button onclick="toggleSolution('sol-1-2')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-eye"></i> Ver Gabarito
-                </button>
-            </div>
-            <div id="feedback-ex-1-2" class="hidden text-xs p-3 rounded-lg"></div>
-            <div id="sol-1-2" class="hidden bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
-                <p class="text-xs text-slate-400 mb-2 font-semibold">Gabarito Sugerido:</p>
-                <pre class="code-font text-xs text-emerald-400 overflow-x-auto">SELECT NomeProduto, PrecoUnitario, Estoque
-
-
-FROM Produtos
-WHERE Estoque < 15 AND PrecoUnitario > 100.00;
-
-
-
-
-    <!-- MÓDULO 2 -->
-    <section class="space-y-6">
-        <div class="border-b border-slate-700 pb-2">
-            <h2 class="text-xl font-bold text-sky-400 flex items-center gap-2">
-                <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full border border-sky-500/20">Módulo 2</span>
-                Junções de Tabelas (JOINS)
-            </h2>
-        </div>
-
-        <!-- Ex 2.1 -->
-        <div class="bg-slate-800/80 rounded-xl border border-slate-700 p-5 space-y-4 shadow-sm" id="ex-2-1">
-            <div>
-                <h3 class="font-semibold text-slate-200">Exercício 2.1 — Relatório de Vendas por Cliente</h3>
-                <p class="text-slate-400 text-sm mt-1">
-                    Crie uma consulta que exiba: <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">VendaID</code>, <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">DataVenda</code>, Nome do Cliente, Email e <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">ValorTotal</code>. Ordene da venda mais recente para a mais antiga.
-                </p>
-            </div>
-            <textarea class="w-full h-28 bg-slate-900 text-slate-200 p-3 rounded-lg border border-slate-700 focus:outline-none focus:border-sky-500 code-font text-sm" placeholder="SELECT ... FROM ... INNER JOIN ..."></textarea>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="checkAnswer('ex-2-1', ['SELECT', 'FROM VENDAS', 'JOIN CLIENTES', 'ORDER BY', 'DESC'])" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-check"></i> Verificar Resposta
-                </button>
-                <button onclick="toggleSolution('sol-2-1')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-eye"></i> Ver Gabarito
-                </button>
-            </div>
-            <div id="feedback-ex-2-1" class="hidden text-xs p-3 rounded-lg"></div>
-            <div id="sol-2-1" class="hidden bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
-                <p class="text-xs text-slate-400 mb-2 font-semibold">Gabarito Sugerido:</p>
-                <pre class="code-font text-xs text-emerald-400 overflow-x-auto">SELECT V.VendaID, V.DataVenda, C.Nome AS NomeCliente, C.Email, V.ValorTotal
-
-
-FROM Vendas V
-INNER JOIN Clientes C ON V.ClienteID = C.ClienteID
-ORDER BY V.DataVenda DESC;
-
-
-
-        <!-- Ex 2.2 -->
-        <div class="bg-slate-800/80 rounded-xl border border-slate-700 p-5 space-y-4 shadow-sm" id="ex-2-2">
-            <div>
-                <h3 class="font-semibold text-slate-200">Exercício 2.2 — Categorias sem Produtos (LEFT JOIN)</h3>
-                <p class="text-slate-400 text-sm mt-1">
-                    A gerência quer listar todos os produtos e suas respectivas categorias. Traga <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">NomeProduto</code>, <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">PrecoUnitario</code> e <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">NomeCategoria</code>. Certifique-se de incluir no resultado inclusive as categorias que ainda <strong>NÃO</strong> possuem produtos cadastrados.
-                </p>
-            </div>
-            <textarea class="w-full h-28 bg-slate-900 text-slate-200 p-3 rounded-lg border border-slate-700 focus:outline-none focus:border-sky-500 code-font text-sm" placeholder="SELECT ... FROM CATEGORIAS LEFT JOIN ..."></textarea>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="checkAnswer('ex-2-2', ['SELECT', 'FROM CATEGORIAS', 'LEFT JOIN', 'PRODUTOS'])" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-check"></i> Verificar Resposta
-                </button>
-                <button onclick="toggleSolution('sol-2-2')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-eye"></i> Ver Gabarito
-                </button>
-            </div>
-            <div id="feedback-ex-2-2" class="hidden text-xs p-3 rounded-lg"></div>
-            <div id="sol-2-2" class="hidden bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
-                <p class="text-xs text-slate-400 mb-2 font-semibold">Gabarito Sugerido:</p>
-                <pre class="code-font text-xs text-emerald-400 overflow-x-auto">SELECT P.NomeProduto, P.PrecoUnitario, C.NomeCategoria
-
-
-FROM Categorias C
-LEFT JOIN Produtos P ON C.CategoriaID = P.CategoriaID;
-
-
-
-
-    <!-- MÓDULO 3 -->
-    <section class="space-y-6">
-        <div class="border-b border-slate-700 pb-2">
-            <h2 class="text-xl font-bold text-sky-400 flex items-center gap-2">
-                <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full border border-sky-500/20">Módulo 3</span>
-                Agregações e Agrupamentos
-            </h2>
-        </div>
-
-        <!-- Ex 3.1 -->
-        <div class="bg-slate-800/80 rounded-xl border border-slate-700 p-5 space-y-4 shadow-sm" id="ex-3-1">
-            <div>
-                <h3 class="font-semibold text-slate-200">Exercício 3.1 — Faturamento por Estado</h3>
-                <p class="text-slate-400 text-sm mt-1">
-                    Calcule o faturamento total e o número de vendas por Estado do cliente. Retorne: <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">Estado</code>, <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">TotalVendas</code> (contagem) e <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">FaturamentoTotal</code> (soma). Ordene pelo FaturamentoTotal decrescente.
-                </p>
-            </div>
-            <textarea class="w-full h-28 bg-slate-900 text-slate-200 p-3 rounded-lg border border-slate-700 focus:outline-none focus:border-sky-500 code-font text-sm" placeholder="SELECT ESTADO, COUNT(...), SUM(...) FROM ... GROUP BY ESTADO"></textarea>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="checkAnswer('ex-3-1', ['SELECT', 'SUM', 'COUNT', 'GROUP BY', 'ESTADO', 'ORDER BY'])" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-check"></i> Verificar Resposta
-                </button>
-                <button onclick="toggleSolution('sol-3-1')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-eye"></i> Ver Gabarito
-                </button>
-            </div>
-            <div id="feedback-ex-3-1" class="hidden text-xs p-3 rounded-lg"></div>
-            <div id="sol-3-1" class="hidden bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
-                <p class="text-xs text-slate-400 mb-2 font-semibold">Gabarito Sugerido:</p>
-                <pre class="code-font text-xs text-emerald-400 overflow-x-auto">SELECT 
-C.Estado, 
-COUNT(V.VendaID) AS TotalVendas, 
-SUM(V.ValorTotal) AS FaturamentoTotal
-
-
-FROM Vendas V
-INNER JOIN Clientes C ON V.ClienteID = C.ClienteID
-GROUP BY C.Estado
-ORDER BY FaturamentoTotal DESC;
-
-
-
-        <!-- Ex 3.2 -->
-        <div class="bg-slate-800/80 rounded-xl border border-slate-700 p-5 space-y-4 shadow-sm" id="ex-3-2">
-            <div>
-                <h3 class="font-semibold text-slate-200">Exercício 3.2 — Filtro pós-agrupamento (HAVING)</h3>
-                <p class="text-slate-400 text-sm mt-1">
-                    Liste o <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">ClienteID</code>, Nome do Cliente e o <code class="bg-slate-900 px-1.5 py-0.5 rounded text-sky-300 text-xs">TotalGasto</code> de cada um. Exiba apenas os clientes que gastaram no total mais de <strong>R$ 2.000,00</strong>.
-                </p>
-            </div>
-            <textarea class="w-full h-28 bg-slate-900 text-slate-200 p-3 rounded-lg border border-slate-700 focus:outline-none focus:border-sky-500 code-font text-sm" placeholder="SELECT ... FROM ... GROUP BY ... HAVING SUM(...) > 2000"></textarea>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="checkAnswer('ex-3-2', ['SELECT', 'GROUP BY', 'HAVING', 'SUM', '2000'])" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-check"></i> Verificar Resposta
-                </button>
-                <button onclick="toggleSolution('sol-3-2')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-eye"></i> Ver Gabarito
-                </button>
-            </div>
-            <div id="feedback-ex-3-2" class="hidden text-xs p-3 rounded-lg"></div>
-            <div id="sol-3-2" class="hidden bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
-                <p class="text-xs text-slate-400 mb-2 font-semibold">Gabarito Sugerido:</p>
-                <pre class="code-font text-xs text-emerald-400 overflow-x-auto">SELECT 
-C.ClienteID, 
-C.Nome AS NomeCliente, 
-SUM(V.ValorTotal) AS TotalGasto
-
-
-FROM Vendas V
-INNER JOIN Clientes C ON V.ClienteID = C.ClienteID
-GROUP BY C.ClienteID, C.Nome
-HAVING SUM(V.ValorTotal) > 2000.00
-ORDER BY TotalGasto DESC;
-
-
-
-
-</main>
-
-<!-- Footer -->
-<footer class="bg-slate-800 border-t border-slate-700 py-6 text-center text-xs text-slate-400">
-    <p>Material Prático de SQL Server - T-SQL. Disponível para estudos e aulas.</p>
-</footer>
-
-<!-- Script de validação simples -->
-<script>
-    function toggleSolution(id) {
-        const el = document.getElementById(id);
-        el.classList.toggle('hidden');
-    }
-
-    function checkAnswer(containerId, requiredKeywords) {
-        const container = document.getElementById(containerId);
-        const textarea = container.querySelector('textarea');
-        const feedback = document.getElementById('feedback-' + containerId);
-        const userCode = textarea.value.toUpperCase();
-
-        if (!userCode.trim()) {
-            feedback.className = "text-xs p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300";
-            feedback.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1'></i> Digite uma consulta SQL antes de verificar.";
-            feedback.classList.remove('hidden');
-            return;
-        }
-
-        const missing = requiredKeywords.filter(kw => !userCode.includes(kw.toUpperCase()));
-
-        if (missing.length === 0) {
-            feedback.className = "text-xs p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300";
-            feedback.innerHTML = "<i class='fa-solid fa-circle-check mr-1'></i> <strong>Excelente!</strong> Sua estrutura SQL atende aos requisitos do exercício.";
-        } else {
-            feedback.className = "text-xs p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300";
-            feedback.innerHTML = `<i class='fa-solid fa-circle-xmark mr-1'></i> <strong>Ops!</strong> Parece que falta utilizar algum(ns) elemento(s) chave na consulta: <code class='font-mono font-bold text-slate-200'>${missing.join(', ')}</code>`;
-        }
-        feedback.classList.remove('hidden');
-    }
-</script>
+        <p class="exercise-description">
+            Calcule o valor total de vendas (<code>SalesAmount</code>) agrupado pelo nome em inglês da categoria do produto (<code>EnglishProductCategoryName</code>). É necessário realizar a junção das tabelas <code>FactInternetSales</code>, <code>DimProduct</code>, <code>DimProductSubcategory</code> e <code>DimProductCategory</code>.
+        </p>
+        <button class="toggle-btn" onclick="toggleSolution('sol-2')">Ver Resposta</button>
+        <div id="sol-2" class="solution-container">
+<pre><code>SELECT 
+    pc.EnglishProductCategoryName AS Categoria,
+    SUM(fis.SalesAmount) AS TotalVendas
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+GROUP BY pc.EnglishProductCategoryName
+ORDER BY TotalVendas DESC;</code></pre>
