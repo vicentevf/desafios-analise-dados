@@ -16,8 +16,6 @@
         --border-color: #334155;
         --banner-bg: rgba(56, 189, 248, 0.1);
         --banner-border: #38bdf8;
-        --success-color: #22c55e;
-        --error-color: #ef4444;
       }
 
       * {
@@ -169,22 +167,6 @@
         align-items: center;
       }
 
-      .btn-verify {
-        background-color: var(--success-color);
-        color: #000;
-        font-weight: 600;
-        border: none;
-        padding: 0.4rem 0.8rem;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.85rem;
-        transition: opacity 0.2s;
-      }
-
-      .btn-verify:hover {
-        opacity: 0.9;
-      }
-
       .toggle-btn {
         background-color: transparent;
         color: var(--accent-color);
@@ -202,26 +184,20 @@
         color: #000;
       }
 
-      .feedback-msg {
-        font-size: 0.85rem;
+      .copy-btn {
+        background-color: #334155;
+        color: #f8fafc;
+        border: none;
         font-weight: 600;
-        display: none;
-        padding: 0.3rem 0.6rem;
+        padding: 0.4rem 0.8rem;
         border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
       }
 
-      .feedback-msg.success {
-        display: inline-block;
-        background-color: rgba(34, 197, 94, 0.15);
-        color: var(--success-color);
-        border: 1px solid var(--success-color);
-      }
-
-      .feedback-msg.error {
-        display: inline-block;
-        background-color: rgba(239, 68, 68, 0.15);
-        color: var(--error-color);
-        border: 1px solid var(--error-color);
+      .copy-btn:hover {
+        background-color: #475569;
       }
 
       .solution-container {
@@ -289,22 +265,19 @@
         </p>
         <div class="editor-section">
           <label class="editor-label"
-            >Cole seu código T-SQL aqui para verificar:</label
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
           >
           <textarea
             class="code-input"
             id="input-1"
-            placeholder="SELECT ... FROM dbo.DimProduct"></textarea>
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
           <div class="action-bar">
-            <button
-              class="btn-verify"
-              onclick="checkCode(1, ['select', 'dimproduct', 'as'])">
-              Verificar Código
-            </button>
             <button class="toggle-btn" onclick="toggleSolution('sol-1')">
-              Ver Resposta Esperada
+              Gabarito / Resposta
             </button>
-            <span id="feedback-1" class="feedback-msg"></span>
+            <button class="copy-btn" onclick="fillExample(1, 'sol-1')">
+              Copiar Gabarito para o Rascunho
+            </button>
           </div>
         </div>
         <div id="sol-1" class="solution-container">
@@ -320,7 +293,7 @@ FROM dbo.DimProduct;</code></pre>
       <div class="exercise-card">
         <div class="exercise-header">
           <span class="exercise-title"
-            >2. Ordenação por Múltiplas Colunas e Posição (04.06, 04.07 e
+            >2. Ordenação por Múltiplas Colunas e Alias (04.06, 04.07 e
             04.08)</span
           >
           <span class="badge badge-topic">ORDER BY</span>
@@ -334,23 +307,208 @@ FROM dbo.DimProduct;</code></pre>
         </p>
         <div class="editor-section">
           <label class="editor-label"
-            >Cole seu código T-SQL aqui para verificar:</label
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
           >
           <textarea
             class="code-input"
             id="input-2"
-            placeholder="SELECT ... ORDER BY ..."></textarea>
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
           <div class="action-bar">
-            <button
-              class="btn-verify"
-              onclick="checkCode(2, ['order by', 'desc', 'dimcustomer'])">
-              Verificar Código
-            </button>
             <button class="toggle-btn" onclick="toggleSolution('sol-2')">
-              Ver Resposta Esperada
+              Gabarito / Resposta
             </button>
-            <span id="feedback-2" class="feedback-msg"></span>
+            <button class="copy-btn" onclick="fillExample(2, 'sol-2')">
+              Copiar Gabarito para o Rascunho
+            </button>
           </div>
+        </div>
+        <div id="sol-2" class="solution-container">
+          <pre><code>SELECT 
+    FirstName AS Nome,
+    LastName AS Sobrenome,
+    YearlyIncome AS RendaAnual
+FROM dbo.DimCustomer
+ORDER BY RendaAnual DESC, Sobrenome ASC;</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 3 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >3. Limitação de Resultados com TOP (04.09)</span
+          >
+          <span class="badge badge-topic">TOP</span>
+        </div>
+        <p class="exercise-description">
+          Selecione as <strong>10 primeiras linhas</strong> da tabela
+          <code>DimReseller</code> exibindo o nome da empresa
+          (<code>ResellerName</code>), a quantidade de funcionários
+          (<code>NumberEmployees</code>) e a receita anual
+          (<code>AnnualRevenue</code>), ordenando da maior receita anual para a
+          menor.
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-3"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-3')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(3, 'sol-3')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-3" class="solution-container">
+          <pre><code>SELECT TOP (10)
+    ResellerName AS NomeEmpresa,
+    NumberEmployees AS QtdFuncionarios,
+    AnnualRevenue AS ReceitaAnual
+FROM dbo.DimReseller
+ORDER BY AnnualRevenue DESC;</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 4 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >4. Utilização de TOP WITH TIES (04.10)</span
+          >
+          <span class="badge badge-topic">TOP WITH TIES</span>
+        </div>
+        <p class="exercise-description">
+          Selecione os 5 produtos com o maior preço de tabela
+          (<code>ListPrice</code>) na tabela <code>DimProduct</code>. Utilize a
+          funcionalidade <code>TOP WITH TIES</code> para incluir produtos
+          empatados na 5ª posição.
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-4"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-4')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(4, 'sol-4')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-4" class="solution-container">
+          <pre><code>SELECT TOP (5) WITH TIES
+    ProductAlternateKey AS CodigoProduto,
+    EnglishProductName AS NomeProduto,
+    ListPrice AS Preco
+FROM dbo.DimProduct
+ORDER BY ListPrice DESC;</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 5 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >5. Filtros com WHERE e Operadores Lógicos (04.11 e 04.12)</span
+          >
+          <span class="badge badge-topic">WHERE & AND/OR</span>
+        </div>
+        <p class="exercise-description">
+          Filtre os funcionários na tabela <code>DimEmployee</code> que possuem
+          o cargo (<code>Title</code>) de 'Design Engineer' **E** possuem saldo
+          de horas de férias (<code>VacationHours</code>) maior que 40, **OU**
+          funcionários com mais de 70 horas de licença médica
+          (<code>SickLeaveHours</code>).
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-5"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-5')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(5, 'sol-5')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-5" class="solution-container">
+          <pre><code>SELECT 
+    FirstName AS Nome,
+    LastName AS Sobrenome,
+    Title AS Cargo,
+    VacationHours AS HorasFerias,
+    SickLeaveHours AS HorasLicenca
+FROM dbo.DimEmployee
+WHERE (Title = 'Design Engineer' AND VacationHours > 40)
+   OR SickLeaveHours > 70;</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 6 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >6. Filtragem em Listas com Operador IN (04.13)</span
+          >
+          <span class="badge badge-topic">Operador IN</span>
+        </div>
+        <p class="exercise-description">
+          Selecione o nome (<code>EnglishProductName</code>), a cor
+          (<code>Color</code>) e o preço (<code>ListPrice</code>) da tabela
+          <code>DimProduct</code> apenas para os produtos cujas cores sejam
+          exatamente **'Black'**, **'Red'** ou **'Silver'**.
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-6"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-6')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(6, 'sol-6')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-6" class="solution-container">
+          <pre><code>SELECT 
+    EnglishProductName AS NomeProduto,
+    Color AS Cor,
+    ListPrice AS Preco
+FROM dbo.DimProduct
+WHERE Color IN ('Black', 'Red', 'Silver');</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 7 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >7. Tratamento de Valores Nulos e NOT (04.14 e 04.16)</span
+          >
+          <span class="badge badge-topic">IS NULL /</span>
         </div>
       </div>
     </div>
