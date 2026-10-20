@@ -16,6 +16,8 @@
         --border-color: #334155;
         --banner-bg: rgba(56, 189, 248, 0.1);
         --banner-border: #38bdf8;
+        --success-color: #22c55e;
+        --error-color: #ef4444;
       }
 
       * {
@@ -115,17 +117,9 @@
         text-transform: uppercase;
       }
 
-      .badge-basico {
+      .badge-topic {
         background-color: #1e3a8a;
         color: #93c5fd;
-      }
-      .badge-intermediario {
-        background-color: #713f12;
-        color: #fde047;
-      }
-      .badge-avancado {
-        background-color: #7f1d1d;
-        color: #fca5a5;
       }
 
       .exercise-description {
@@ -133,20 +127,101 @@
         margin-bottom: 1.2rem;
       }
 
-      .toggle-btn {
-        background-color: var(--accent-color);
+      /* Interactive Student Editor Area */
+      .editor-section {
+        margin-top: 1rem;
+        background-color: rgba(15, 23, 42, 0.5);
+        padding: 1rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+      }
+
+      .editor-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      textarea.code-input {
+        width: 100%;
+        height: 90px;
+        background-color: var(--code-bg);
+        color: #e2e8f0;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 0.75rem;
+        font-family: "Fira Code", Consolas, Monaco, monospace;
+        font-size: 0.85rem;
+        resize: vertical;
+        outline: none;
+      }
+
+      textarea.code-input:focus {
+        border-color: var(--accent-color);
+      }
+
+      .action-bar {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+        align-items: center;
+      }
+
+      .btn-verify {
+        background-color: var(--success-color);
         color: #000;
         font-weight: 600;
         border: none;
-        padding: 0.5rem 1rem;
+        padding: 0.4rem 0.8rem;
         border-radius: 4px;
         cursor: pointer;
-        transition: background-color 0.2s ease;
+        font-size: 0.85rem;
+        transition: opacity 0.2s;
+      }
+
+      .btn-verify:hover {
+        opacity: 0.9;
+      }
+
+      .toggle-btn {
+        background-color: transparent;
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
+        font-weight: 600;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
       }
 
       .toggle-btn:hover {
-        background-color: var(--accent-hover);
-        color: #fff;
+        background-color: var(--accent-color);
+        color: #000;
+      }
+
+      .feedback-msg {
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: none;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+      }
+
+      .feedback-msg.success {
+        display: inline-block;
+        background-color: rgba(34, 197, 94, 0.15);
+        color: var(--success-color);
+        border: 1px solid var(--success-color);
+      }
+
+      .feedback-msg.error {
+        display: inline-block;
+        background-color: rgba(239, 68, 68, 0.15);
+        color: var(--error-color);
+        border: 1px solid var(--error-color);
       }
 
       .solution-container {
@@ -181,21 +256,18 @@
       <header>
         <h1>Práticas T-SQL</h1>
         <p>Base de Dados: <code>AdventureWorksDW2025</code></p>
-        <p>
-          Modulo 4 - Professor <code>Bruce Fonseca - Analise de Dados</code>
-        </p>
       </header>
 
       <!-- Mural de Informação do Módulo 4 -->
       <div class="module-banner">
         <div class="module-banner-icon">📌</div>
         <div class="module-banner-text">
-          <h2>Módulo 4: Consolidação de Conhecimentos em T-SQL</h2>
+          <h2>Módulo 4: Seleção, Filtragem e Formatação de Dados</h2>
           <p>
-            Este conjunto de exercícios é referente ao aprendizado prático do
-            <strong>Módulo 4</strong>. As atividades cobrem desde consultas
-            fundamentais até conceitos avançados de junções, agregações, funções
-            de janela e CTEs recursivas.
+            Exercícios focados nos conteúdos do
+            <strong>Módulo 04.04 ao 04.18</strong>: seleção de colunas, alias,
+            ordenação, TOP / TOP WITH TIES, operadores WHERE, IN, BETWEEN, IS
+            NULL, NOT, concatenação de texto e LIKE.
           </p>
         </div>
       </div>
@@ -204,28 +276,43 @@
       <div class="exercise-card">
         <div class="exercise-header">
           <span class="exercise-title"
-            >1. Listagem de Clientes e Renda Anual</span
+            >1. Seleção de Colunas e Alias (04.04 e 04.05)</span
           >
-          <span class="badge badge-basico">Básico</span>
+          <span class="badge badge-topic">Colunas & Alias</span>
         </div>
         <p class="exercise-description">
-          Selecione o primeiro nome (<code>FirstName</code>), sobrenome
-          (<code>LastName</code>), e a renda anual (<code>YearlyIncome</code>)
-          de todos os clientes da tabela <code>DimCustomer</code> que possuem
-          uma renda anual superior a $80,000. Ordene pelo sobrenome em ordem
-          alfabética.
+          Selecione o código do produto (<code>ProductAlternateKey</code>), o
+          nome em inglês (<code>EnglishProductName</code>) e o preço de tabela
+          (<code>ListPrice</code>) da tabela <code>DimProduct</code>. Renomeie
+          as colunas para <strong>CodigoProduto</strong>,
+          <strong>NomeProduto</strong> e <strong>PrecoTabela</strong>.
         </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-1')">
-          Ver Resposta
-        </button>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Cole seu código T-SQL aqui para verificar:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-1"
+            placeholder="SELECT ... FROM dbo.DimProduct"></textarea>
+          <div class="action-bar">
+            <button
+              class="btn-verify"
+              onclick="checkCode(1, ['select', 'dimproduct', 'as'])">
+              Verificar Código
+            </button>
+            <button class="toggle-btn" onclick="toggleSolution('sol-1')">
+              Ver Resposta Esperada
+            </button>
+            <span id="feedback-1" class="feedback-msg"></span>
+          </div>
+        </div>
         <div id="sol-1" class="solution-container">
           <pre><code>SELECT 
-    FirstName,
-    LastName,
-    YearlyIncome
-FROM dbo.DimCustomer
-WHERE YearlyIncome > 80000
-ORDER BY LastName ASC;</code></pre>
+    ProductAlternateKey AS CodigoProduto,
+    EnglishProductName AS NomeProduto,
+    ListPrice AS PrecoTabela
+FROM dbo.DimProduct;</code></pre>
         </div>
       </div>
 
@@ -233,350 +320,39 @@ ORDER BY LastName ASC;</code></pre>
       <div class="exercise-card">
         <div class="exercise-header">
           <span class="exercise-title"
-            >2. Total de Vendas por Categoria de Produto</span
+            >2. Ordenação por Múltiplas Colunas e Posição (04.06, 04.07 e
+            04.08)</span
           >
-          <span class="badge badge-intermediario">Intermediário</span>
+          <span class="badge badge-topic">ORDER BY</span>
         </div>
         <p class="exercise-description">
-          Calcule o valor total de vendas (<code>SalesAmount</code>) agrupado
-          pelo nome em inglês da categoria do produto
-          (<code>EnglishProductCategoryName</code>). É necessário realizar a
-          junção das tabelas <code>FactInternetSales</code>,
-          <code>DimProduct</code>, <code>DimProductSubcategory</code> e
-          <code>DimProductCategory</code>.
+          Liste o primeiro nome (<code>FirstName</code>), sobrenome
+          (<code>LastName</code>) e a renda anual (<code>YearlyIncome</code>) da
+          tabela <code>DimCustomer</code>. Ordene os resultados em ordem
+          decrescente de renda anual e, em caso de empate, em ordem alfabética
+          ascendente pelo sobrenome.
         </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-2')">
-          Ver Resposta
-        </button>
-        <div id="sol-2" class="solution-container">
-          <pre><code>SELECT 
-    pc.EnglishProductCategoryName AS Categoria,
-    SUM(fis.SalesAmount) AS TotalVendas
-FROM dbo.FactInternetSales fis
-INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
-INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
-INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
-GROUP BY pc.EnglishProductCategoryName
-ORDER BY TotalVendas DESC;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 3 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >3. Vendas por Revendedor e Território</span
+        <div class="editor-section">
+          <label class="editor-label"
+            >Cole seu código T-SQL aqui para verificar:</label
           >
-          <span class="badge badge-intermediario">Intermediário</span>
-        </div>
-        <p class="exercise-description">
-          Exiba o nome do revendedor (<code>ResellerName</code>), a região do
-          território (<code>SalesTerritoryRegion</code>) e o valor total
-          acumulado das vendas (<code>SalesAmount</code>) para cada revendedor
-          da tabela <code>FactResellerSales</code>. Exiba apenas os revendedores
-          cujo total de vendas ultrapasse $100,000.
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-3')">
-          Ver Resposta
-        </button>
-        <div id="sol-3" class="solution-container">
-          <pre><code>SELECT 
-    r.ResellerName,
-    st.SalesTerritoryRegion,
-    SUM(frs.SalesAmount) AS TotalVendas
-FROM dbo.FactResellerSales frs
-INNER JOIN dbo.DimReseller r ON frs.ResellerKey = r.ResellerKey
-INNER JOIN dbo.DimSalesTerritory st ON frs.SalesTerritoryKey = st.SalesTerritoryKey
-GROUP BY r.ResellerName, st.SalesTerritoryRegion
-HAVING SUM(frs.SalesAmount) > 100000
-ORDER BY TotalVendas DESC;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 4 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >4. Ranking de Vendas de Funcionários por Ano</span
-          >
-          <span class="badge badge-avancado">Avançado</span>
-        </div>
-        <p class="exercise-description">
-          Utilizando a função de janela (Window Function)
-          <code>DENSE_RANK()</code>, crie um ranking dos funcionários
-          (<code>DimEmployee</code>) com base no total de vendas realizadas na
-          tabela <code>FactResellerSales</code> para cada ano de pedido (<code
-            >CalendarYear</code
-          >
-          da tabela <code>DimDate</code>).
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-4')">
-          Ver Resposta
-        </button>
-        <div id="sol-4" class="solution-container">
-          <pre><code>WITH VendasPorFuncionario AS (
-    SELECT 
-        d.CalendarYear,
-        e.FirstName + ' ' + e.LastName AS NomeFuncionario,
-        SUM(frs.SalesAmount) AS TotalVendas
-    FROM dbo.FactResellerSales frs
-    INNER JOIN dbo.DimEmployee e ON frs.EmployeeKey = e.EmployeeKey
-    INNER JOIN dbo.DimDate d ON frs.OrderDateKey = d.DateKey
-    GROUP BY d.CalendarYear, e.FirstName, e.LastName
-)
-SELECT 
-    CalendarYear,
-    NomeFuncionario,
-    TotalVendas,
-    DENSE_RANK() OVER (PARTITION BY CalendarYear ORDER BY TotalVendas DESC) AS Ranking
-FROM VendasPorFuncionario
-ORDER BY CalendarYear, Ranking;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 5 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >5. Análise de Vendas Cumulativas (Running Total)</span
-          >
-          <span class="badge badge-avancado">Avançado</span>
-        </div>
-        <p class="exercise-description">
-          Escreva uma consulta que retorne o ano/mês do pedido e calcule a soma
-          diária das vendas na tabela <code>FactInternetSales</code>,
-          adicionando uma coluna com o total acumulado das vendas ao longo do
-          tempo (<em>Running Total</em>).
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-5')">
-          Ver Resposta
-        </button>
-        <div id="sol-5" class="solution-container">
-          <pre><code>SELECT 
-    d.FullDateAlternateKey AS Data,
-    SUM(fis.SalesAmount) AS VendasDoDia,
-    SUM(SUM(fis.SalesAmount)) OVER (ORDER BY d.FullDateAlternateKey) AS TotalAcumulado
-FROM dbo.FactInternetSales fis
-INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
-GROUP BY d.FullDateAlternateKey
-ORDER BY d.FullDateAlternateKey;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 6 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >6. Distribuição Geográfica de Clientes por País</span
-          >
-          <span class="badge badge-basico">Básico</span>
-        </div>
-        <p class="exercise-description">
-          Conte a quantidade total de clientes (<code>DimCustomer</code>)
-          registrados por país (<code>EnglishCountryRegionName</code> da tabela
-          <code>DimGeography</code>). Exiba os resultados ordenados do país com
-          maior número de clientes para o menor.
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-6')">
-          Ver Resposta
-        </button>
-        <div id="sol-6" class="solution-container">
-          <pre><code>SELECT 
-    g.EnglishCountryRegionName AS Pais,
-    COUNT(c.CustomerKey) AS TotalClientes
-FROM dbo.DimCustomer c
-INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
-GROUP BY g.EnglishCountryRegionName
-ORDER BY TotalClientes DESC;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 7 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >7. Produtos sem Nenhuma Venda Registrada</span
-          >
-          <span class="badge badge-intermediario">Intermediário</span>
-        </div>
-        <p class="exercise-description">
-          Identifique todos os produtos acabados (<code
-            >FinishedGoodsFlag = 1</code
-          >) na tabela <code>DimProduct</code> que <strong>nunca</strong> foram
-          vendidos pela internet (ausentes na tabela
-          <code>FactInternetSales</code>). Exiba o código
-          (<code>ProductAlternateKey</code>) e o nome do produto
-          (<code>EnglishProductName</code>).
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-7')">
-          Ver Resposta
-        </button>
-        <div id="sol-7" class="solution-container">
-          <pre><code>SELECT 
-    p.ProductAlternateKey,
-    p.EnglishProductName
-FROM dbo.DimProduct p
-LEFT JOIN dbo.FactInternetSales fis ON p.ProductKey = fis.ProductKey
-WHERE p.FinishedGoodsFlag = 1
-  AND fis.ProductKey IS NULL
-ORDER BY p.EnglishProductName;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 8 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >8. Desempenho de Vendas vs Cota Anual (Quota)</span
-          >
-          <span class="badge badge-intermediario">Intermediário</span>
-        </div>
-        <p class="exercise-description">
-          Compare o valor total de vendas atingido por cada funcionário
-          (<code>FactResellerSales</code>) com a sua cota anual estipulada
-          (<code>FactSalesQuota</code>) para o ano de 2013. Exiba o nome do
-          funcionário, a cota total, o total vendido e o percentual atingido da
-          cota.
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-8')">
-          Ver Resposta
-        </button>
-        <div id="sol-8" class="solution-container">
-          <pre><code>WITH Vendas2013 AS (
-    SELECT 
-        frs.EmployeeKey,
-        SUM(frs.SalesAmount) AS TotalVendas
-    FROM dbo.FactResellerSales frs
-    INNER JOIN dbo.DimDate d ON frs.OrderDateKey = d.DateKey
-    WHERE d.CalendarYear = 2013
-    GROUP BY frs.EmployeeKey
-),
-Cotas2013 AS (
-    SELECT 
-        EmployeeKey,
-        SUM(SalesAmountQuota) AS TotalCota
-    FROM dbo.FactSalesQuota
-    WHERE CalendarYear = 2013
-    GROUP BY EmployeeKey
-)
-SELECT 
-    e.FirstName + ' ' + e.LastName AS Funcionario,
-    c.TotalCota,
-    ISNULL(v.TotalVendas, 0) AS TotalVendas,
-    ROUND((ISNULL(v.TotalVendas, 0) / c.TotalCota) * 100, 2) AS PercentualAtingido
-FROM Cotas2013 c
-INNER JOIN dbo.DimEmployee e ON c.EmployeeKey = e.EmployeeKey
-LEFT JOIN Vendas2013 v ON c.EmployeeKey = v.EmployeeKey
-ORDER BY PercentualAtingido DESC;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 9 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >9. Comparativo de Vendas Mês a Mês (MoM Growth)</span
-          >
-          <span class="badge badge-avancado">Avançado</span>
-        </div>
-        <p class="exercise-description">
-          Utilize a função de janela <code>LAG()</code> para calcular o total de
-          vendas na internet (<code>FactInternetSales</code>) de cada mês,
-          comparado ao mês anterior, exibindo o valor de vendas do mês atual, do
-          mês anterior e a variação percentual mensal.
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-9')">
-          Ver Resposta
-        </button>
-        <div id="sol-9" class="solution-container">
-          <pre><code>WITH VendasMensais AS (
-    SELECT 
-        d.CalendarYear,
-        d.MonthNumberOfYear,
-        d.EnglishMonthName,
-        SUM(fis.SalesAmount) AS VendasAtuais
-    FROM dbo.FactInternetSales fis
-    INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
-    GROUP BY d.CalendarYear, d.MonthNumberOfYear, d.EnglishMonthName
-)
-SELECT 
-    CalendarYear,
-    MonthNumberOfYear,
-    EnglishMonthName,
-    VendasAtuais,
-    LAG(VendasAtuais, 1) OVER (ORDER BY CalendarYear, MonthNumberOfYear) AS VendasMesAnterior,
-    ROUND(((VendasAtuais - LAG(VendasAtuais, 1) OVER (ORDER BY CalendarYear, MonthNumberOfYear)) 
-            / LAG(VendasAtuais, 1) OVER (ORDER BY CalendarYear, MonthNumberOfYear)) * 100, 2) AS VariacaoPercentual
-FROM VendasMensais
-ORDER BY CalendarYear, MonthNumberOfYear;</code></pre>
-        </div>
-      </div>
-
-      <!-- Exercício 10 -->
-      <div class="exercise-card">
-        <div class="exercise-header">
-          <span class="exercise-title"
-            >10. Hierarquia Organizacional de Funcionários (CTE Recursiva)</span
-          >
-          <span class="badge badge-avancado">Avançado</span>
-        </div>
-        <p class="exercise-description">
-          Escreva uma Expressão de Tabela Comum Recursiva (<code>WITH CTE</code
-          >) utilizando a tabela <code>DimEmployee</code> para mapear a árvore
-          hierárquica da empresa, mostrando o nome do funcionário, o nome do seu
-          gestor direto (<code>ParentEmployeeKey</code>) e o seu nível dentro da
-          estrutura organizacional (nível 1 para a chefia principal).
-        </p>
-        <button class="toggle-btn" onclick="toggleSolution('sol-10')">
-          Ver Resposta
-        </button>
-        <div id="sol-10" class="solution-container">
-          <pre><code>WITH HierarquiaFuncionarios AS (
-    -- Âncora: Funcionários sem gestor (Nível Superior)
-    SELECT 
-        EmployeeKey,
-        ParentEmployeeKey,
-        FirstName + ' ' + LastName AS NomeFuncionario,
-        CAST(NULL AS NVARCHAR(101)) AS NomeGestor,
-        1 AS Nivel
-    FROM dbo.DimEmployee
-    WHERE ParentEmployeeKey IS NULL
-
-    UNION ALL
-
-    -- Membro Recursivo: Subordinados
-    SELECT 
-        e.EmployeeKey,
-        e.ParentEmployeeKey,
-        e.FirstName + ' ' + e.LastName AS NomeFuncionario,
-        h.NomeFuncionario AS NomeGestor,
-        h.Nivel + 1 AS Nivel
-    FROM dbo.DimEmployee e
-    INNER JOIN HierarquiaFuncionarios h ON e.ParentEmployeeKey = h.EmployeeKey
-)
-SELECT 
-    Nivel,
-    NomeFuncionario,
-    ISNULL(NomeGestor, 'CEO / Direção') AS GestorDirecto
-FROM HierarquiaFuncionarios
-ORDER BY Nivel, NomeFuncionario;</code></pre>
+          <textarea
+            class="code-input"
+            id="input-2"
+            placeholder="SELECT ... ORDER BY ..."></textarea>
+          <div class="action-bar">
+            <button
+              class="btn-verify"
+              onclick="checkCode(2, ['order by', 'desc', 'dimcustomer'])">
+              Verificar Código
+            </button>
+            <button class="toggle-btn" onclick="toggleSolution('sol-2')">
+              Ver Resposta Esperada
+            </button>
+            <span id="feedback-2" class="feedback-msg"></span>
+          </div>
         </div>
       </div>
     </div>
-
-    <script>
-      function toggleSolution(id) {
-        const solutionElem = document.getElementById(id);
-        const button = solutionElem.previousElementSibling;
-
-        if (solutionElem.classList.contains("show")) {
-          solutionElem.classList.remove("show");
-          button.textContent = "Ver Resposta";
-        } else {
-          solutionElem.classList.add("show");
-          button.textContent = "Ocultar Resposta";
-        }
-      }
-    </script>
   </body>
 </html>
