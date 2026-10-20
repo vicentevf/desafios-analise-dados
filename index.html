@@ -508,9 +508,189 @@ WHERE Color IN ('Black', 'Red', 'Silver');</code></pre>
           <span class="exercise-title"
             >7. Tratamento de Valores Nulos e NOT (04.14 e 04.16)</span
           >
-          <span class="badge badge-topic">IS NULL /</span>
+          <span class="badge badge-topic">IS NULL / NOT</span>
+        </div>
+        <p class="exercise-description">
+          Liste o primeiro nome (<code>FirstName</code>), sobrenome
+          (<code>LastName</code>) e e-mail (<code>EmailAddress</code>) da tabela
+          <code>DimCustomer</code>. Filtre apenas clientes sem título (<code
+            >Title IS NULL</code
+          >) e que **possuam** e-mail cadastrado (<code
+            >EmailAddress IS NOT NULL</code
+          >).
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-7"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-7')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(7, 'sol-7')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-7" class="solution-container">
+          <pre><code>SELECT 
+    FirstName AS Nome,
+    LastName AS Sobrenome,
+    EmailAddress AS Email,
+    Phone AS Telefone
+FROM dbo.DimCustomer
+WHERE Title IS NULL 
+  AND EmailAddress IS NOT NULL;</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 8 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >8. Filtragem de Faixas de Valores com BETWEEN (04.15)</span
+          >
+          <span class="badge badge-topic">BETWEEN</span>
+        </div>
+        <p class="exercise-description">
+          Filtre os revendedores da tabela <code>DimReseller</code> cuja
+          quantidade de funcionários (<code>NumberEmployees</code>) esteja entre
+          10 e 50 (inclusive) e cuja receita anual (<code>AnnualRevenue</code>)
+          esteja entre $100,000 e $500,000.
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-8"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-8')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(8, 'sol-8')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-8" class="solution-container">
+          <pre><code>SELECT 
+    ResellerName AS NomeEmpresa,
+    NumberEmployees AS QtdFuncionarios,
+    AnnualRevenue AS ReceitaAnual
+FROM dbo.DimReseller
+WHERE NumberEmployees BETWEEN 10 AND 50
+  AND AnnualRevenue BETWEEN 100000 AND 500000;</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 9 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >9. Concatenando Colunas de Texto (04.17)</span
+          >
+          <span class="badge badge-topic">Concatenação</span>
+        </div>
+        <p class="exercise-description">
+          Escreva uma consulta na tabela <code>DimCustomer</code> que concatene
+          o primeiro nome (<code>FirstName</code>), nome do meio
+          (<code>MiddleName</code>) e o sobrenome (<code>LastName</code>) em uma
+          única coluna chamada **NomeCompleto**.
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-9"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-9')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(9, 'sol-9')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-9" class="solution-container">
+          <pre><code>SELECT 
+    FirstName + ' ' + ISNULL(MiddleName + ' ', '') + LastName AS NomeCompleto,
+    AddressLine1 + ' - ' + AddressLine2 AS EnderecoFormatado,
+    YearlyIncome AS RendaAnual
+FROM dbo.DimCustomer;</code></pre>
+        </div>
+      </div>
+
+      <!-- Exercício 10 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <span class="exercise-title"
+            >10. Busca por Padrões com Operador LIKE (04.18)</span
+          >
+          <span class="badge badge-topic">Operador LIKE</span>
+        </div>
+        <p class="exercise-description">
+          Busque todos os produtos da tabela <code>DimProduct</code> cujo nome
+          em inglês (<code>EnglishProductName</code>) comece com a palavra
+          **'Road'** e contenha a palavra **'Frame'** em qualquer parte do nome.
+        </p>
+        <div class="editor-section">
+          <label class="editor-label"
+            >Espaço para rascunhar/escrever o seu código T-SQL:</label
+          >
+          <textarea
+            class="code-input"
+            id="input-10"
+            placeholder="Cole ou digite o seu código T-SQL aqui..."></textarea>
+          <div class="action-bar">
+            <button class="toggle-btn" onclick="toggleSolution('sol-10')">
+              Gabarito / Resposta
+            </button>
+            <button class="copy-btn" onclick="fillExample(10, 'sol-10')">
+              Copiar Gabarito para o Rascunho
+            </button>
+          </div>
+        </div>
+        <div id="sol-10" class="solution-container">
+          <pre><code>SELECT 
+    ProductAlternateKey AS CodigoProduto,
+    EnglishProductName AS NomeProduto,
+    Color AS Cor,
+    ListPrice AS Preco
+FROM dbo.DimProduct
+WHERE EnglishProductName LIKE 'Road%Frame%'
+ORDER BY EnglishProductName;</code></pre>
         </div>
       </div>
     </div>
+
+    <script>
+      function toggleSolution(id) {
+        const solutionElem = document.getElementById(id);
+        const button = solutionElem.previousElementSibling;
+
+        if (solutionElem.classList.contains("show")) {
+          solutionElem.classList.remove("show");
+        } else {
+          solutionElem.classList.add("show");
+        }
+      }
+
+      function fillExample(exerciseNum, solId) {
+        const solutionText = document.querySelector(
+          `#${solId} pre code`,
+        ).textContent;
+        document.getElementById(`input-${exerciseNum}`).value = solutionText;
+      }
+    </script>
   </body>
 </html>
